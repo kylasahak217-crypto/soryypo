@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Love 💖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        html, body {
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        body {
+            background: linear-gradient(135deg, #ffd6e0, #ffb3c6, #ff99ad);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem;
+        }
+        .container {
+            background: white;
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 10px 40px rgba(255, 105, 135, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        h1 {
+            color: #e63961;
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            line-height: 1.5;
+        }
+        .buttons-wrapper {
+            position: relative;
+            min-height: 140px;
+            margin-bottom: 2rem;
+        }
+        .btn-row {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            touch-action: manipulation;
+        }
+        .yes {
+            background: linear-gradient(135deg, #ff6b8a, #e63961);
+            color: white;
+            box-shadow: 0 4px 15px rgba(230, 57, 97, 0.35);
+            z-index: 10;
+        }
+        .no {
+            background: #e0e0e0;
+            color: #555;
+            position: relative;
+            transition: all 0.15s ease-out;
+            z-index: 5;
+        }
+        .progress {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        .final {
+            display: none;
+        }
+        .final.show {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .final h2 {
+            color: #e63961;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .final p {
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        .hearts {
+            font-size: 2rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="gameArea">
+            <h1 id="question">Do you forgive me? 💔</h1>
+            <div class="buttons-wrapper">
+                <div class="btn-row" id="btnRow">
+                    <button class="yes" id="yesBtn">Yes 💖</button>
+                    <button class="no" id="noBtn">No 😢</button>
+                </div>
+            </div>
+            <p class="progress" id="progress">Question 1 of 5</p>
+        </div>
+
+        <div class="final" id="finalArea">
+            <h2>You made me the happiest! 🥰</h2>
+            <p>
+                Thank you for giving me another chance.<br>
+                I promise to be better, to listen more, and to make you smile every single day.<br>
+                You mean everything to me. I love you so much! ❤️
+            </p>
+            <div class="hearts">💕💗💖💘💝</div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "Do you forgive me? 💔",
+            "Will you still love me? 🥺",
+            "Can I make it up to you? 🥹",
+            "Do I get another chance? 🙏",
+            "Am I still your favorite person? 💕"
+        ];
+
+        let current = 0;
+        const noBtn = document.getElementById('noBtn');
+        const questionEl = document.getElementById('question');
+        const progressEl = document.getElementById('progress');
+        const gameArea = document.getElementById('gameArea');
+        const finalArea = document.getElementById('finalArea');
+
+        function moveNo() {
+            const wrapper = document.querySelector('.buttons-wrapper');
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const btnWidth = noBtn.offsetWidth || 100;
+            const btnHeight = noBtn.offsetHeight || 50;
+            const maxX = wrapperRect.width - btnWidth - 20;
+            const maxY = wrapperRect.height - btnHeight - 20;
+            const randomX = Math.max(0, Math.random() * maxX);
+            const randomY = Math.max(0, Math.random() * maxY);
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function resetNo() {
+            noBtn.style.position = 'relative';
+            noBtn.style.left = '';
+            noBtn '';
+            noBtn.style.top = '';
+        }
+
+        function nextQuestion() {
+            current++;
+            if (current >= questions.length) {
+                gameArea.style.display = 'none';
+                finalArea.classList.add('show');
+                return;
+            }
+            questionEl.textContent = questions[current];
+            progressEl.textContent = `Question ${current + 1} of ${questions.length}`;
+            resetNo();
+        }
+
+        noBtn.addEventListener('touchstart', e => { e.preventDefault(); moveNo(); });
+        noBtn.addEventListener('mouseover', moveNo);
+        noBtn.addEventListener('click', moveNo);
+
+        document.getElementById('yesBtn').addEventListener('click', nextQuestion);
+        document.getElementById('yesBtn').addEventListener('touchstart', e => { e.preventDefault(); nextQuestion(); });
+    </script>
+</body>
+</html>
